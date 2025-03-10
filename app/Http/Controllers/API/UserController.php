@@ -18,6 +18,15 @@ class UserController extends Controller
 {
     /**
      * @param Request $request
+     * @return mixed
+     */
+    public function fetch(Request $request)
+    {
+        return ResponseFormatter::success($request->user(),'Data profile user berhasil diambil');
+    }
+
+    /**
+     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      * @throws \Exception
      */
@@ -94,5 +103,22 @@ class UserController extends Controller
                 'error' => $error,
             ],'Authentication Failed', 500);
         }
-    }    
+    }
+    
+    public function logout(Request $request)
+    {
+        $token = $request->user()->currentAccessToken()->delete();
+
+        return ResponseFormatter::success($token,'Token Revoked');
+    }
+    
+    public function updateProfile(Request $request)
+    {
+        $data = $request->all();
+
+        $user = Auth::user();
+        $user->update($data);
+
+        return ResponseFormatter::success($user,'Profile Updated');
+    }
 }

@@ -25,4 +25,9 @@ class TransactionItem extends Model
     {
         return $this->hasOne(Product::class, 'id','products_id');
     }
+    
+    public function galleries()
+    {
+      return $this->hasMany(ProductGallery::class, 'id','products_id');
+    }
 }
